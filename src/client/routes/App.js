@@ -7,8 +7,6 @@ import { DragonflyPage, VisualizationPage, BoatPage } from '../pages';
 ReactGA.initialize('UA-107911028-1');
 
 export const App = () => {
- 
-
   useEffect(() => {
     // hide the preloader.
     document.querySelector('.loader').style.visibility = 'hidden';

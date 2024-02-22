@@ -198,9 +198,7 @@ export const VisualizationPage = () => {
   return (
     <div className={classes.root}>
       <div className={classes.paper} elevation={4}>
-        <div className={classes.graphTitle}>
-          Graphing Calculator
-        </div>
+        <div className={classes.graphTitle}>Graphing Calculator</div>
         <Graph
           points={state.points}
           ranges={{

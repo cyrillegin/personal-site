@@ -15,7 +15,8 @@ const testPlugin = (plugin, details) => {
         .then(response => response.json())
         .then(data => {
           res(data);
-        }).catch(e => rej(e));
+        })
+        .catch(e => rej(e));
     } else {
       res({});
     }
@@ -114,14 +115,13 @@ export const DragonflyPage = () => {
       units: this.state.units,
       endpoint: this.state.endpoint,
       meta: this.state.meta,
-    })
-      .then(data => {
-        setState({
-          dialogIsOpen: true,
-          dialogMessage: data,
-          dialogTitle: 'Test Result',
-        });
+    }).then(data => {
+      setState({
+        dialogIsOpen: true,
+        dialogMessage: data,
+        dialogTitle: 'Test Result',
       });
+    });
   };
 
   // const closeDialog = () => {
@@ -181,23 +181,20 @@ export const DragonflyPage = () => {
           className={state.selectedPlugin === '' ? classes.fullPaper : classes.leftPaper}
           elevation={4}
         >
-          <div >
-            Plugins
-          </div>
+          <div>Plugins</div>
 
-          <ul  className={classes.pluginsList}>
+          <ul className={classes.pluginsList}>
             {plugins.map((plugin, index) => {
               return (
                 <li
                   className={plugin === state.selectedPlugin ? classes.selectedPlugin : null}
                   key={index}
-                  
                 >
-                  <button onClick={() => {
-                    this.handlePluginSelect(plugin);
-                  }}>
-
-                 
+                  <button
+                    onClick={() => {
+                      this.handlePluginSelect(plugin);
+                    }}
+                  >
                     {/* <ListItemIcon>{pollerIcon(plugin)}</ListItemIcon> */}
                     {/* <ListItemText primary={plugin} /> */}
                   </button>
@@ -208,9 +205,7 @@ export const DragonflyPage = () => {
         </div>
         {state.selectedPlugin !== '' && (
           <div className={classes.rightPaper}>
-            <div className={classes.title}>
-              Details
-            </div>
+            <div className={classes.title}>Details</div>
             <form className={classes.container} noValidate autoComplete="off">
               <input
                 id="name"
@@ -218,7 +213,6 @@ export const DragonflyPage = () => {
                 onChange={handleChange('name')}
                 className={classes.textField}
                 value={state.name}
-             
               />
               <input
                 id="description"
@@ -226,7 +220,6 @@ export const DragonflyPage = () => {
                 onChange={handleChange('description')}
                 className={classes.textField}
                 value={state.description}
-             
               />
               <input
                 id="coefficients"
@@ -234,7 +227,6 @@ export const DragonflyPage = () => {
                 onChange={handleChange('coefficients')}
                 className={classes.textField}
                 value={state.coefficients}
-         
               />
               <input
                 id="station"
@@ -242,7 +234,6 @@ export const DragonflyPage = () => {
                 onChange={handleChange('station')}
                 className={classes.textField}
                 value={state.station}
-        
               />
               <input
                 id="pollRate"
@@ -250,7 +241,6 @@ export const DragonflyPage = () => {
                 onChange={handleChange('pollRate')}
                 className={classes.textField}
                 value={state.pollRate}
-            
               />
               <input
                 id="pin"
@@ -258,7 +248,6 @@ export const DragonflyPage = () => {
                 onChange={handleChange('pin')}
                 className={classes.textField}
                 value={state.pin}
-            
               />
               <input
                 id="units"
@@ -266,7 +255,6 @@ export const DragonflyPage = () => {
                 onChange={handleChange('units')}
                 className={classes.textField}
                 value={state.units}
-               
               />
               <input
                 id="endpoint"
@@ -274,7 +262,6 @@ export const DragonflyPage = () => {
                 onChange={handleChange('endpoint')}
                 className={classes.textField}
                 value={state.endpoint}
-                
               />
               <input
                 id="meta"
@@ -282,7 +269,6 @@ export const DragonflyPage = () => {
                 onChange={handleChange('meta')}
                 className={classes.textField}
                 value={state.meta}
-              
               />
               <button className={classes.button} onClick={testSensor}>
                 Test Sensor

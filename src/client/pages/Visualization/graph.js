@@ -8,18 +8,17 @@ const useStyles = createUseStyles(() => ({
     fill: 'none',
     shapeRendering: 'crispEdges',
     stroke: '#000',
-    strokeWidth: '1px'
+    strokeWidth: '1px',
   },
-  
+
   'ChartAxisShape > g > line': {
-    strokeOpacity: '0.2'
+    strokeOpacity: '0.2',
   },
-  
+
   'ChartAxisShape > g > text': {
     stroke: 'none',
-    fontFamily: '\'Roboto\', \'Helvetica\', \'Arial\', sans-serif'
-  }
-  
+    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+  },
 }));
 
 const d3 = {
@@ -32,7 +31,6 @@ const d3 = {
 };
 
 export const Graph = props => {
-
   const classes = useStyles();
 
   const [state, setState] = useState({
@@ -169,7 +167,6 @@ export const Graph = props => {
     </div>
   );
 };
-
 
 Graph.propTypes = {
   points: PropTypes.arrayOf(
