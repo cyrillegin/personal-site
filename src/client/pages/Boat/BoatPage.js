@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { ThreeManager } from './ThreeManager';
+// import { ThreeManager } from './ThreeManager';
 
-const getBoat = model => {
-  return fetch('/models/testBoat.json');
-};
+// const getBoat = model => {
+//   return fetch('/models/testBoat.json');
+// };
 
 const baseButton = {
   position: 'absolute',
@@ -82,45 +81,40 @@ const useStyles = createUseStyles(() => ({
   },
 }));
 
-export const BoatPage = props => {
-  // static propTypes = {
-  //   classes: PropTypes.object.isRequired,
-  //   getBoat: PropTypes.func.isRequired,
-  // };
-
+export const BoatPage = () => {
   const classes = useStyles();
-  const [state, setState] = useState({
-    loaded: false,
-    shaded: true,
-    wireframe: true,
-    verticies: false,
-  });
+  // const [state, setState] = useState({
+  //   loaded: false,
+  //   shaded: true,
+  //   wireframe: true,
+  //   verticies: false,
+  // });
 
-  const handleDisplayChange = e => {
-    if (state.loaded) {
-      this.setState({
-        [e.target.value]: !state[e.target.value],
-      });
-      if (e.target.value === 'shaded') {
-        ThreeManager.meshController.showMesh(!state[e.target.value]);
-      }
-      if (e.target.value === 'verticies') {
-        ThreeManager.app.displayVerticies = !ThreeManager.app.displayVerticies;
+  // const handleDisplayChange = e => {
+  //   if (state.loaded) {
+  //     this.setState({
+  //       [e.target.value]: !state[e.target.value],
+  //     });
+  //     if (e.target.value === 'shaded') {
+  //       ThreeManager.meshController.showMesh(!state[e.target.value]);
+  //     }
+  //     if (e.target.value === 'verticies') {
+  //       ThreeManager.app.displayVerticies = !ThreeManager.app.displayVerticies;
 
-        Object.keys(state.boat).forEach(key => {
-          if (key === 'width' || key === 'height' || key === 'length' || key === 'frames') {
-            return;
-          }
-          ThreeManager.app = ThreeManager.curveController.deleteCurve(ThreeManager.app, { key });
-        });
-        ThreeManager.curveController.initCurves(ThreeManager.app, state.boat);
-      }
-      if (e.target.value === 'wireframe') {
-        ThreeManager.app.displayWireFrame = !ThreeManager.app.displayWireFrame;
-        ThreeManager.curveController.showCurves(!ThreeManager.app.displayWireFrame);
-      }
-    }
-  };
+  //       Object.keys(state.boat).forEach(key => {
+  //         if (key === 'width' || key === 'height' || key === 'length' || key === 'frames') {
+  //           return;
+  //         }
+  //         ThreeManager.app = ThreeManager.curveController.deleteCurve(ThreeManager.app, { key });
+  //       });
+  //       ThreeManager.curveController.initCurves(ThreeManager.app, state.boat);
+  //     }
+  //     if (e.target.value === 'wireframe') {
+  //       ThreeManager.app.displayWireFrame = !ThreeManager.app.displayWireFrame;
+  //       ThreeManager.curveController.showCurves(!ThreeManager.app.displayWireFrame);
+  //     }
+  //   }
+  // };
 
   return (
     <div>

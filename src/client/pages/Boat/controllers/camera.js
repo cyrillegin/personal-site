@@ -26,7 +26,7 @@ export class CameraController {
   }
 
   initCameraMenu(app) {
-    document.querySelector('#camera-front-button').addEventListener('click', e => {
+    document.querySelector('#camera-front-button').addEventListener('click', () => {
       const to = {
         x: 0,
         y: 0,
@@ -34,7 +34,7 @@ export class CameraController {
       };
       this.tweenCamera(app, to);
     });
-    document.querySelector('#camera-top-button').addEventListener('click', e => {
+    document.querySelector('#camera-top-button').addEventListener('click', () => {
       const to = {
         x: 0,
         y: 150,
@@ -42,7 +42,7 @@ export class CameraController {
       };
       this.tweenCamera(app, to);
     });
-    document.querySelector('#camera-side-button').addEventListener('click', e => {
+    document.querySelector('#camera-side-button').addEventListener('click', () => {
       const to = {
         x: 100,
         y: 0,
@@ -50,7 +50,7 @@ export class CameraController {
       };
       this.tweenCamera(app, to);
     });
-    document.querySelector('#camera-45-button').addEventListener('click', e => {
+    document.querySelector('#camera-45-button').addEventListener('click', () => {
       const to = {
         x: 100,
         y: 100,

@@ -1,6 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useEffect } from 'react';
 import { SocialIcon } from 'react-social-icons';
 import { createUseStyles } from 'react-jss';
+import { Link, useLocation } from 'react-router-dom';
+import ReactGA from 'react-ga';
 
 const useStyles = createUseStyles(() => ({
   root: {
@@ -41,33 +43,23 @@ const useStyles = createUseStyles(() => ({
 }));
 
 export const NavBar = () => {
-  // static propTypes = {
-  //   classes: PropTypes.object.isRequired,
-  //   location: PropTypes.shape({
-  //     pathname: PropTypes.string.isRequired,
-  //   }).isRequired,
-  // };
-  //
   const classes = useStyles();
-  const anchorEl = useRef(null);
+  const location = useLocation();
 
-  const handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
+  let currentPage = location.pathname;
+  if (currentPage === '/') {
+    currentPage = '/boat';
+  }
 
-  const handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
+  useEffect(() => {
+    ReactGA.pageview(window.location.hash);
+  }, [location]);
 
-  let currentPage = 'this.props.location.pathname;';
-  // if (currentPage === '/') {
-  //   currentPage = '/boat';
-  // }
   return (
     <div>
-      {/*<Typography variant="headline" color="inherit" className={this.props.classes.title}>*/}
-      Cyrille Gindreau
-      {/* </Typography> */}
+      <div color="inherit" className={classes.title}>
+        Cyrille Gindreau
+      </div>
       <div className={classes.icons}>
         <SocialIcon
           style={{ height: 25, width: 25, marginLeft: '6px', marginRight: '6px' }}
@@ -91,7 +83,7 @@ export const NavBar = () => {
         />
       </div>
       <div className={classes.menuGroup}>
-        {/* <Link
+        <Link
           to="/boat"
           className={currentPage === '/boat' ? classes.selectedMenuItem : classes.menuItem}
         >
@@ -108,8 +100,10 @@ export const NavBar = () => {
           className={currentPage === '/dragonfly' ? classes.selectedMenuItem : classes.menuItem}
         >
           Dragonfly
-        </Link> */}
+        </Link>
       </div>
     </div>
   );
 };
+
+NavBar.propTypes = {};

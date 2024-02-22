@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { createUseStyles } from 'react-jss';
 
 const testPlugin = (plugin, details) => {
@@ -16,7 +15,7 @@ const testPlugin = (plugin, details) => {
         .then(response => response.json())
         .then(data => {
           res(data);
-        });
+        }).catch(e => rej(e));
     } else {
       res({});
     }
@@ -66,16 +65,11 @@ const useStyles = createUseStyles(() => ({
   },
 }));
 
-// static propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   testPlugin: PropTypes.func.isRequired,
-//   plugins: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-// };
-//
 const plugins = ['cryptoPoller', 'customEntry', 'gpioPoller', 'BMP180Poller', 'DHT11Poller'];
 
-export const DragonflyPage = props => {
+export const DragonflyPage = () => {
   const classes = useStyles();
+
   const [state, setState] = useState({
     loading: true,
     plugins: null,
@@ -95,12 +89,12 @@ export const DragonflyPage = props => {
     meta: '',
   });
 
-  const handlePluginSelect = name => {
-    setState({
-      selectedPlugin: name,
-      testResult: {},
-    });
-  };
+  // const handlePluginSelect = name => {
+  //   setState({
+  //     selectedPlugin: name,
+  //     testResult: {},
+  //   });
+  // };
 
   const handleChange = name => event => {
     setState({
@@ -110,20 +104,19 @@ export const DragonflyPage = props => {
   };
 
   const testSensor = () => {
-    props
-      .testPlugin(this.state.selectedPlugin, {
-        name: this.state.name,
-        description: this.state.description,
-        coefficients: this.state.coefficients,
-        station: this.state.station,
-        pollRate: this.state.pollRate,
-        pin: this.state.pin,
-        units: this.state.units,
-        endpoint: this.state.endpoint,
-        meta: this.state.meta,
-      })
+    testPlugin(this.state.selectedPlugin, {
+      name: this.state.name,
+      description: this.state.description,
+      coefficients: this.state.coefficients,
+      station: this.state.station,
+      pollRate: this.state.pollRate,
+      pin: this.state.pin,
+      units: this.state.units,
+      endpoint: this.state.endpoint,
+      meta: this.state.meta,
+    })
       .then(data => {
-        this.setState({
+        setState({
           dialogIsOpen: true,
           dialogMessage: data,
           dialogTitle: 'Test Result',
@@ -131,24 +124,24 @@ export const DragonflyPage = props => {
       });
   };
 
-  const closeDialog = () => {
-    setState({
-      dialogIsOpen: false,
-    });
-  };
+  // const closeDialog = () => {
+  //   setState({
+  //     dialogIsOpen: false,
+  //   });
+  // };
 
-  const pollerIcon = icon => {
-    switch (icon) {
-      case 'cryptoPoller':
-        return <MonetizationOnIcon />;
-      case 'gpioPoller':
-        return <ACUnitIcon />;
-      default:
-        return <ShowChartIcon />;
-    }
-  };
+  // const pollerIcon = icon => {
+  //   switch (icon) {
+  //     case 'cryptoPoller':
+  //       return <MonetizationOnIcon />;
+  //     case 'gpioPoller':
+  //       return <ACUnitIcon />;
+  //     default:
+  //       return <ShowChartIcon />;
+  //   }
+  // };
 
-  const fullscreen = e => {
+  const fullscreen = () => {
     const image = document.getElementById('dragonfly-image');
     if (image.requestFullscreen) {
       image.requestFullscreen();
@@ -159,7 +152,7 @@ export const DragonflyPage = props => {
     } else if (image.msRequestFullscreen) {
       image.msRequestFullscreen();
     } else {
-      console.log('Fullscreen API is not supported.');
+      console.info('Fullscreen API is not supported.');
     }
   };
 
@@ -188,23 +181,26 @@ export const DragonflyPage = props => {
           className={state.selectedPlugin === '' ? classes.fullPaper : classes.leftPaper}
           elevation={4}
         >
-          <div variant="headline" component="h3">
+          <div >
             Plugins
           </div>
 
-          <ul component="nav" className={classes.pluginsList}>
+          <ul  className={classes.pluginsList}>
             {plugins.map((plugin, index) => {
               return (
                 <li
                   className={plugin === state.selectedPlugin ? classes.selectedPlugin : null}
                   key={index}
-                  button
-                  onClick={() => {
-                    this.handlePluginSelect(plugin);
-                  }}
+                  
                 >
-                  {/* <ListItemIcon>{pollerIcon(plugin)}</ListItemIcon> */}
-                  {/* <ListItemText primary={plugin} /> */}
+                  <button onClick={() => {
+                    this.handlePluginSelect(plugin);
+                  }}>
+
+                 
+                    {/* <ListItemIcon>{pollerIcon(plugin)}</ListItemIcon> */}
+                    {/* <ListItemText primary={plugin} /> */}
+                  </button>
                 </li>
               );
             })}
@@ -212,7 +208,7 @@ export const DragonflyPage = props => {
         </div>
         {state.selectedPlugin !== '' && (
           <div className={classes.rightPaper}>
-            <div variant="headline" component="h3" className={classes.title}>
+            <div className={classes.title}>
               Details
             </div>
             <form className={classes.container} noValidate autoComplete="off">
@@ -222,7 +218,7 @@ export const DragonflyPage = props => {
                 onChange={handleChange('name')}
                 className={classes.textField}
                 value={state.name}
-                margin="normal"
+             
               />
               <input
                 id="description"
@@ -230,7 +226,7 @@ export const DragonflyPage = props => {
                 onChange={handleChange('description')}
                 className={classes.textField}
                 value={state.description}
-                margin="normal"
+             
               />
               <input
                 id="coefficients"
@@ -238,7 +234,7 @@ export const DragonflyPage = props => {
                 onChange={handleChange('coefficients')}
                 className={classes.textField}
                 value={state.coefficients}
-                margin="normal"
+         
               />
               <input
                 id="station"
@@ -246,7 +242,7 @@ export const DragonflyPage = props => {
                 onChange={handleChange('station')}
                 className={classes.textField}
                 value={state.station}
-                margin="normal"
+        
               />
               <input
                 id="pollRate"
@@ -254,7 +250,7 @@ export const DragonflyPage = props => {
                 onChange={handleChange('pollRate')}
                 className={classes.textField}
                 value={state.pollRate}
-                margin="normal"
+            
               />
               <input
                 id="pin"
@@ -262,7 +258,7 @@ export const DragonflyPage = props => {
                 onChange={handleChange('pin')}
                 className={classes.textField}
                 value={state.pin}
-                margin="normal"
+            
               />
               <input
                 id="units"
@@ -270,7 +266,7 @@ export const DragonflyPage = props => {
                 onChange={handleChange('units')}
                 className={classes.textField}
                 value={state.units}
-                margin="normal"
+               
               />
               <input
                 id="endpoint"
@@ -278,7 +274,7 @@ export const DragonflyPage = props => {
                 onChange={handleChange('endpoint')}
                 className={classes.textField}
                 value={state.endpoint}
-                margin="normal"
+                
               />
               <input
                 id="meta"
@@ -286,7 +282,7 @@ export const DragonflyPage = props => {
                 onChange={handleChange('meta')}
                 className={classes.textField}
                 value={state.meta}
-                margin="normal"
+              
               />
               <button className={classes.button} onClick={testSensor}>
                 Test Sensor

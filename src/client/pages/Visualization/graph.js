@@ -1,7 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import { withStyles } from '@mui/material/styles';
-// import './graph-styles.css';
+
+import { createUseStyles } from 'react-jss';
+
+const useStyles = createUseStyles(() => ({
+  ChartAxisShape: {
+    fill: 'none',
+    shapeRendering: 'crispEdges',
+    stroke: '#000',
+    strokeWidth: '1px'
+  },
+  
+  'ChartAxisShape > g > line': {
+    strokeOpacity: '0.2'
+  },
+  
+  'ChartAxisShape > g > text': {
+    stroke: 'none',
+    fontFamily: '\'Roboto\', \'Helvetica\', \'Arial\', sans-serif'
+  }
+  
+}));
 
 const d3 = {
   ...require('d3-selection'),
@@ -13,22 +32,8 @@ const d3 = {
 };
 
 export const Graph = props => {
-  // static propTypes = {
-  //   classes: PropTypes.object.isRequired,
-  //   points: PropTypes.arrayOf(
-  //     PropTypes.shape({
-  //       x: PropTypes.number.isRequired,
-  //       y: PropTypes.number.isRequired,
-  //     }),
-  //   ).isRequired,
-  //   ranges: PropTypes.shape({
-  //     xMin: PropTypes.number.isRequired,
-  //     xMax: PropTypes.number.isRequired,
-  //     yMin: PropTypes.number.isRequired,
-  //     yMax: PropTypes.number.isRequired,
-  //   }).isRequired,
-  // };
-  // const classes = useStyles();
+
+  const classes = useStyles();
 
   const [state, setState] = useState({
     mounted: false,
@@ -90,7 +95,7 @@ export const Graph = props => {
       .tickSizeOuter(0)
       .tickValues(getTic(props.ranges.yMax, props.ranges.yMin));
 
-    newChart.append('g').attr('class', 'chart-axis-shape').call(yAxis);
+    newChart.append('g').attr('class', classes.ChartAxisShape).call(yAxis);
 
     // X Axis
     const xAxis = d3
@@ -102,7 +107,7 @@ export const Graph = props => {
 
     newChart
       .append('g')
-      .attr('class', 'chart-axis-shape')
+      .attr('class', classes.ChartAxisShape)
       .attr('transform', `translate(0,${height - margin.bottom})`)
       .call(xAxis);
 
@@ -110,7 +115,7 @@ export const Graph = props => {
     newChart
       .append('g')
       .append('line')
-      .attr('class', 'chart-axis-shape')
+      .attr('class', classes.ChartAxisShape)
       .attr('x1', 0)
       .attr('x2', width)
       .attr('y1', margin.bottom)
@@ -120,7 +125,7 @@ export const Graph = props => {
     newChart
       .append('g')
       .append('line')
-      .attr('class', 'chart-axis-shape')
+      .attr('class', classes.ChartAxisShape)
       .attr('x1', width)
       .attr('x2', width)
       .attr('y1', margin.bottom)
@@ -163,4 +168,20 @@ export const Graph = props => {
       <div id="graph-container" />
     </div>
   );
+};
+
+
+Graph.propTypes = {
+  points: PropTypes.arrayOf(
+    PropTypes.shape({
+      x: PropTypes.number.isRequired,
+      y: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
+  ranges: PropTypes.shape({
+    xMin: PropTypes.number.isRequired,
+    xMax: PropTypes.number.isRequired,
+    yMin: PropTypes.number.isRequired,
+    yMax: PropTypes.number.isRequired,
+  }).isRequired,
 };

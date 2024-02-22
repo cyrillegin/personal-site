@@ -1,10 +1,10 @@
-import {
-  initScene,
-  initLights,
-  CameraController,
-  MeshController,
-  CurvesController,
-} from './controllers';
+// import {
+//   initScene,
+//   initLights,
+//   CameraController,
+//   MeshController,
+//   CurvesController,
+// } from './controllers';
 
 class ThreeManager {
   constructor() {

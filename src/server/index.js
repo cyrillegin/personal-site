@@ -72,11 +72,11 @@ import compression from 'compression';
     };
     const httpsServer = https.createServer(credentials, app);
     httpsServer.listen(443, () => {
-      console.log('HTTPS Server running on port 443');
+      console.info('HTTPS Server running on port 443');
     });
   } else {
     // For dev server
     const server = http.createServer(app);
-    server.listen(port, () => console.log(`Site running on localhost:${port}`));
+    server.listen(port, () => console.info(`Site running on localhost:${port}`));
   }
 })();

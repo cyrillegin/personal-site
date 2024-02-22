@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-// import { withStyles } from '@mui/material/styles';
-// import Paper from '@mui/material/Paper';
-// import Typography from '@mui/material/Typography';
 import { Graph } from './graph';
 import { createUseStyles } from 'react-jss';
 
@@ -42,7 +38,7 @@ const useStyles = createUseStyles(() => ({
   },
 }));
 
-export const VisualizationPage = props => {
+export const VisualizationPage = () => {
   const classes = useStyles();
 
   const [state, setState] = useState({
@@ -181,7 +177,7 @@ export const VisualizationPage = props => {
     parseEquation();
   }, []);
 
-  const handleEqInput = e => event => {
+  const handleEqInput = () => event => {
     setState(
       {
         equation: event.target.value,
@@ -202,7 +198,7 @@ export const VisualizationPage = props => {
   return (
     <div className={classes.root}>
       <div className={classes.paper} elevation={4}>
-        <div variant="headline" component="h3" className={classes.graphTitle}>
+        <div className={classes.graphTitle}>
           Graphing Calculator
         </div>
         <Graph

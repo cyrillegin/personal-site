@@ -102,7 +102,7 @@ export class CurvesController {
     return curveObject;
   }
 
-  defineCurve(curveAttributes, key) {
+  defineCurve(curveAttributes) {
     const pointA = new Vector3(
       curveAttributes.start[0],
       curveAttributes.start[1],
