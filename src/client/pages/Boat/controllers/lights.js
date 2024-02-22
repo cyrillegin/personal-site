@@ -7,9 +7,9 @@
 
 
 */
-import { SpotLight, AmbientLight } from 'three/build/three.module';
+import { SpotLight, AmbientLight } from 'three';
 
-function initLights(app) {
+export const initLights = app => {
   // Create main light.
   const sun = new SpotLight(0xffffff, 1);
   sun.position.set(0, 20, 0);
@@ -29,6 +29,6 @@ function initLights(app) {
   app.scene.add(backlight);
   app.lights.backlight = backlight;
   return app;
-}
+};
 
 export default initLights;

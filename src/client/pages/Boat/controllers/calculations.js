@@ -1,8 +1,8 @@
-import { Vector3 } from 'three/build/three.module';
+import { Vector3 } from 'three';
 // Takes in the boat, a curve to apply offsets to, and its key (the name of the curve)
 // Returns the modifed curve coordinates taking into consideration, width, height, length,
 // as well as positional offsets for the curve controls.
-export function applyOffsets(boat, curve, key) {
+export const applyOffsets = (boat, curve, key) => {
   // Define offsets
   let lengthOffset = key.toLowerCase().includes('aft') ? -boat.length : boat.length;
   let heightOffset = key.toLowerCase().includes('beam') ? boat.height : -boat.height;
@@ -33,12 +33,12 @@ export function applyOffsets(boat, curve, key) {
     curveCoordinates.start[2] += lengthOffset;
   }
   return curveCoordinates;
-}
+};
 
 // Implementation of casteljau's algorithem, adapted from 2d to 3d from
 // https://stackoverflow.com/questions/14174252/how-to-find-out-y-coordinate-of-specific-point-in-bezier-curve-in-canvas
 // Takes a curve and a percent along the curve and returns the 3d coordinates of that point in a vector3
-export function casteljauPoint(curve, t) {
+export const casteljauPoint = (curve, t) => {
   // const THREE = require('three'); //eslint-disable-line
   // Step 1
   const Ax = (1 - t) * curve.start[0] + t * (curve.start[0] + curve.startControl[0]);
@@ -67,11 +67,11 @@ export function casteljauPoint(curve, t) {
   const Py = (1 - t) * Dy + t * Ey;
   const Pz = (1 - t) * Dz + t * Ez;
   return new Vector3(Px, Py, Pz);
-}
+};
 
 // Inverse of casteljau's algorithem, takes in a curve and a distance from the back
 // of the boat and Returns the t value for use in the casteljauPoint function.
-export function casteljauFromY(curve, distFromBack) {
+export const casteljauFromY = (curve, distFromBack) => {
   // make a guess about t
   const curveB = JSON.parse(JSON.stringify(curve));
   let t = 0.5;
@@ -101,9 +101,9 @@ export function casteljauFromY(curve, distFromBack) {
     }
   }
   return t;
-}
+};
 
-export function findLocation(boat, frame) {
+export const findLocation = (boat, frame) => {
   let beamCurve;
   let chineCurve;
   let keelCurve;
@@ -130,6 +130,4 @@ export function findLocation(boat, frame) {
   const locationB = casteljauPoint(chineCurve, t2);
   const locationC = casteljauPoint(keelCurve, t3);
   return { locationA, locationB, locationC };
-}
-
-export default { casteljauFromY, casteljauPoint, applyOffsets };
+};

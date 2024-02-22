@@ -1,14 +1,7 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@mui/material/styles';
-import Switch from '@mui/material/Switch';
-import Paper from '@mui/material/Paper';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import initScene from './controllers/scene.controller';
-import initLights from './controllers/lights.controller';
-import CameraController from './controllers/camera.controller';
-import MeshController from './controllers/mesh.controller';
-import CurvesController from './controllers/curves.controller';
+import { createUseStyles } from 'react-jss';
+import { ThreeManager } from './ThreeManager';
 
 const getBoat = model => {
   return fetch('/models/testBoat.json');
@@ -28,7 +21,8 @@ const baseButton = {
     background: 'rgba(0, 197, 0, 1)',
   },
 };
-const styles = theme => ({
+
+const useStyles = createUseStyles(() => ({
   canvas: {
     height: `${screen.height > 600 ? '600' : screen.height - 20}px`,
     width: screen.height > 600 ? '70%' : '90%',
@@ -86,135 +80,97 @@ const styles = theme => ({
     padding: '12px',
     margin: '16px auto',
   },
-});
+}));
 
-export class BoatPage extends Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    getBoat: PropTypes.func.isRequired,
-  };
+export const BoatPage = props => {
+  // static propTypes = {
+  //   classes: PropTypes.object.isRequired,
+  //   getBoat: PropTypes.func.isRequired,
+  // };
 
-  state = {
+  const classes = useStyles();
+  const [state, setState] = useState({
     loaded: false,
     shaded: true,
     wireframe: true,
     verticies: false,
+  });
+
+  const handleDisplayChange = e => {
+    if (state.loaded) {
+      this.setState({
+        [e.target.value]: !state[e.target.value],
+      });
+      if (e.target.value === 'shaded') {
+        ThreeManager.meshController.showMesh(!state[e.target.value]);
+      }
+      if (e.target.value === 'verticies') {
+        ThreeManager.app.displayVerticies = !ThreeManager.app.displayVerticies;
+
+        Object.keys(state.boat).forEach(key => {
+          if (key === 'width' || key === 'height' || key === 'length' || key === 'frames') {
+            return;
+          }
+          ThreeManager.app = ThreeManager.curveController.deleteCurve(ThreeManager.app, { key });
+        });
+        ThreeManager.curveController.initCurves(ThreeManager.app, state.boat);
+      }
+      if (e.target.value === 'wireframe') {
+        ThreeManager.app.displayWireFrame = !ThreeManager.app.displayWireFrame;
+        ThreeManager.curveController.showCurves(!ThreeManager.app.displayWireFrame);
+      }
+    }
   };
 
-  componentDidMount() {
-    this.app = initScene(document.querySelector('#canvas'));
-    this.app = initLights(this.app);
-    this.cameraController = new CameraController();
-    this.app = this.cameraController.initCamera(this.app);
+  return (
+    <div>
+      <div id={'canvas'} className={classes.canvas} />
 
-    this.meshController = new MeshController();
-    this.curveController = new CurvesController();
-    this.props
-      .getBoat('default')
-      .then(res => res.json())
-      .then(data => {
-        this.app = this.curveController.initCurves(this.app, data);
-        this.curveController.updateFrames(this.app, data);
-        this.meshController.initMesh(this.app, data);
-        this.meshController.showMesh(this.app.displayShaded);
-        // this.oldValues = JSON.parse(JSON.stringify(this.boatParametersService.updatePoint(data)));
-        this.app.render();
-        this.setState({
-          loaded: true,
-          boat: data,
-        });
-      });
-  }
-
-  render() {
-    const handleDisplayChange = e => {
-      if (this.state.loaded) {
-        this.setState({
-          [e.target.value]: !this.state[e.target.value],
-        });
-        if (e.target.value === 'shaded') {
-          this.meshController.showMesh(!this.state[e.target.value]);
-        }
-        if (e.target.value === 'verticies') {
-          this.app.displayVerticies = !this.app.displayVerticies;
-
-          Object.keys(this.state.boat).forEach(key => {
-            if (key === 'width' || key === 'height' || key === 'length' || key === 'frames') {
-              return;
-            }
-            this.app = this.curveController.deleteCurve(this.app, { key });
-          });
-          this.curveController.initCurves(this.app, this.state.boat);
-        }
-        if (e.target.value === 'wireframe') {
-          this.app.displayWireFrame = !this.app.displayWireFrame;
-          this.curveController.showCurves(!this.app.displayWireFrame);
-        }
-      }
-    };
-
-    return (
-      <div>
-        <div id={'canvas'} className={this.props.classes.canvas} />
-
-        <div className={this.props.classes.cube}>
-          <div className={this.props.classes.cameraTop} id={'camera-top-button'}>
-            Top
-          </div>
-
-          <div className={this.props.classes.cameraSide} id={'camera-side-button'}>
-            Side
-          </div>
-
-          <div className={this.props.classes.cameraFront} id={'camera-front-button'}>
-            Front
-          </div>
-        </div>
-        <div className={this.props.classes.cameraPerspective} id={'camera-45-button'}>
-          45°
+      <div className={classes.cube}>
+        <div className={classes.cameraTop} id={'camera-top-button'}>
+          Top
         </div>
 
-        <div className={this.props.classes.togglesContainer}>
-          <FormControlLabel
-            control={
-              <Switch checked={this.state.shaded} onChange={handleDisplayChange} value="shaded" />
-            }
-            label="Toggle Shaded"
-          />
-          <FormControlLabel
-            control={
-              <Switch
-                checked={this.state.verticies}
-                onChange={handleDisplayChange}
-                value="verticies"
-              />
-            }
-            label="Toggle Verticies"
-          />
-          <FormControlLabel
-            control={
-              <Switch
-                checked={this.state.wireframe}
-                onChange={handleDisplayChange}
-                value="wireframe"
-              />
-            }
-            label="Toggle Wireframe"
-          />
+        <div className={classes.cameraSide} id={'camera-side-button'}>
+          Side
         </div>
 
-        <Paper className={this.props.classes.description}>
-          This was a project done for my senior project at New Mexico State University. The goal was
-          to be able to construct a boat in 3D and output the blueprints so that an amateur boat
-          maker could build it. The user would also be able to save and load their projects via json
-          files as well as be able to export in obj or stl formats for 3D printing.
-          <br />
-          This demo allows you to view the demo boat and trigger some different rendering methods.
-          You can also pan, zoom, and orbit around the boat.
-        </Paper>
+        <div className={classes.cameraFront} id={'camera-front-button'}>
+          Front
+        </div>
       </div>
-    );
-  }
-}
+      <div className={classes.cameraPerspective} id={'camera-45-button'}>
+        45°
+      </div>
 
-export default withStyles(styles)(BoatPage);
+      <div className={classes.togglesContainer}>
+        {/* <FormControlLabel
+          control={<Switch checked={state.shaded} onChange={handleDisplayChange} value="shaded" />}
+          label="Toggle Shaded"
+        />
+        <FormControlLabel
+          control={
+            <Switch checked={state.verticies} onChange={handleDisplayChange} value="verticies" />
+          }
+          label="Toggle Verticies"
+        />
+        <FormControlLabel
+          control={
+            <Switch checked={state.wireframe} onChange={handleDisplayChange} value="wireframe" />
+          }
+          label="Toggle Wireframe"
+        /> */}
+      </div>
+
+      <div className={classes.description}>
+        This was a project done for my senior project at New Mexico State University. The goal was
+        to be able to construct a boat in 3D and output the blueprints so that an amateur boat maker
+        could build it. The user would also be able to save and load their projects via json files
+        as well as be able to export in obj or stl formats for 3D printing.
+        <br />
+        This demo allows you to view the demo boat and trigger some different rendering methods. You
+        can also pan, zoom, and orbit around the boat.
+      </div>
+    </div>
+  );
+};

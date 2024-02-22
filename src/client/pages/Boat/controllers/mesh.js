@@ -12,10 +12,10 @@ import {
   Vector2,
   Mesh,
   Geometry,
-} from 'three/build/three.module';
+} from 'three';
 import { applyOffsets, casteljauPoint } from './calculations';
 
-export default class MeshController {
+export class MeshController {
   initMesh(app, boat) {
     const geometry = this.defineGeometry(boat);
     const uvedGeometry = this.defineUvs(geometry);
@@ -125,8 +125,14 @@ export default class MeshController {
       const currentA = casteljauPoint(curveA, (1 / itterations) * i);
       const currentB = casteljauPoint(curveB, (1 / itterations) * i);
       parts.push({
-        start: [[lastA.x, lastA.y, lastA.z], [currentA.x, currentA.y, currentA.z]],
-        end: [[lastB.x, lastB.y, lastB.z], [currentB.x, currentB.y, currentB.z]],
+        start: [
+          [lastA.x, lastA.y, lastA.z],
+          [currentA.x, currentA.y, currentA.z],
+        ],
+        end: [
+          [lastB.x, lastB.y, lastB.z],
+          [currentB.x, currentB.y, currentB.z],
+        ],
       });
       lastA = currentA;
       lastB = currentB;

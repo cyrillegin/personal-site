@@ -9,10 +9,10 @@
     renders the next frame of the scene.
 
 */
-import { Scene, PCFSoftShadowMap, WebGLRenderer } from 'three/build/three.module';
+import { Scene, PCFSoftShadowMap, WebGLRenderer } from 'three';
 import TWEEN from '@tweenjs/tween.js';
 
-function initRenderer(app) {
+export const initRenderer = app => {
   app.renderer = new WebGLRenderer({
     antialias: true,
     alpha: true,
@@ -38,9 +38,9 @@ function initRenderer(app) {
     requestAnimationFrame(app.render);
   };
   return app;
-}
+};
 
-function initScene(container) {
+export const initScene = container => {
   const app = {
     scene: new Scene(),
     camera: null,
@@ -53,6 +53,4 @@ function initScene(container) {
   };
   initRenderer(app);
   return app;
-}
-
-export default initScene;
+};

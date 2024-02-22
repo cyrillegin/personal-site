@@ -6,20 +6,20 @@
     Creates a camera and adds OrbitControls to it.
 
 */
-import * as THREE from 'three/build/three.module';
-import 'three/examples/js/controls/OrbitControls';
+import { PerspectiveCamera, Vector3 } from 'three';
+import OrbitControls from 'three/examples/jsm/controls/OrbitControls';
 import TWEEN from '@tweenjs/tween.js';
 
-export default class CameraController {
+export class CameraController {
   initCamera(app) {
-    app.camera = new THREE.PerspectiveCamera(
+    app.camera = new PerspectiveCamera(
       45,
       app.container.offsetWidth / app.container.offsetHeight,
       0.1,
       80000,
     );
     app.camera.position.set(100, 0, 100);
-    app.camera.cameraControls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
+    app.camera.cameraControls = new OrbitControls(app.camera, app.renderer.domElement);
     this.initCameraMenu(app);
     this.tweenCamera(app, { x: 100, y: 100, z: 100 });
     return app;
@@ -72,10 +72,10 @@ export default class CameraController {
       .easing(TWEEN.Easing.Linear.None)
       .onUpdate(e => {
         app.camera.position.set(e.x, e.y, e.z);
-        app.camera.lookAt(new THREE.Vector3(0, 0, 0));
+        app.camera.lookAt(new Vector3(0, 0, 0));
       })
       .onComplete(() => {
-        app.camera.lookAt(new THREE.Vector3(0, 0, 0));
+        app.camera.lookAt(new Vector3(0, 0, 0));
       })
       .start();
   }

@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { NavBar } from '../components/NavBar/NavBar';
-// import { BoatPage } from '../pages/Boat';
-import { DragonflyPage, VisualizationPage } from '../pages';
+import { DragonflyPage, VisualizationPage, BoatPage } from '../pages';
 
 ReactGA.initialize('UA-107911028-1');
 
@@ -26,10 +25,10 @@ export const App = () => {
       path: '/visualization',
       element: <VisualizationPage />,
     },
-    // {
-    //   path: "/",
-    //   element: <BoatPage />,
-    // },
+    {
+      path: '/',
+      element: <BoatPage />,
+    },
   ]);
 
   return (

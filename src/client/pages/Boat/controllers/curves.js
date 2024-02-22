@@ -8,11 +8,11 @@ import {
   BufferGeometry,
   Geometry,
   MeshBasicMaterial,
-} from 'three/build/three.module';
-import mirrorAttributes from './mirror';
+} from 'three';
+import { mirrorAttributes } from './mirror';
 import { casteljauPoint, applyOffsets, casteljauFromY } from './calculations';
 
-export default class CurvesController {
+export class CurvesController {
   constructor() {
     this.curveObjects = [];
   }
