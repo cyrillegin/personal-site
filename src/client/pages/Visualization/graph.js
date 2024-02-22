@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import './graph-styles.css';
+import { withStyles } from '@mui/material/styles';
+// import './graph-styles.css';
 
 const d3 = {
   ...require('d3-selection'), // eslint-disable-line
@@ -93,10 +93,7 @@ export class Graph extends Component {
       .tickSizeOuter(0)
       .tickValues(getTic(this.props.ranges.yMax, this.props.ranges.yMin));
 
-    newChart
-      .append('g')
-      .attr('class', 'chart-axis-shape')
-      .call(yAxis);
+    newChart.append('g').attr('class', 'chart-axis-shape').call(yAxis);
 
     // X Axis
     const xAxis = d3

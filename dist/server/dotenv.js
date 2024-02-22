@@ -1,0 +1,9 @@
+"use strict";
+
+var _path = _interopRequireDefault(require("path"));
+var _dotenv = _interopRequireDefault(require("dotenv"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+_dotenv["default"].config({
+  path: _path["default"].resolve(__dirname, '../../.env')
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJfcGF0aCIsIl9pbnRlcm9wUmVxdWlyZURlZmF1bHQiLCJyZXF1aXJlIiwiX2RvdGVudiIsIm9iaiIsIl9fZXNNb2R1bGUiLCJkb3RlbnYiLCJjb25maWciLCJwYXRoIiwicmVzb2x2ZSIsIl9fZGlybmFtZSJdLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9zZXJ2ZXIvZG90ZW52LmpzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBwYXRoIGZyb20gJ3BhdGgnO1xuaW1wb3J0IGRvdGVudiBmcm9tICdkb3RlbnYnO1xuXG5kb3RlbnYuY29uZmlnKHsgcGF0aDogcGF0aC5yZXNvbHZlKF9fZGlybmFtZSwgJy4uLy4uLy5lbnYnKSB9KTtcbiJdLCJtYXBwaW5ncyI6Ijs7QUFBQSxJQUFBQSxLQUFBLEdBQUFDLHNCQUFBLENBQUFDLE9BQUE7QUFDQSxJQUFBQyxPQUFBLEdBQUFGLHNCQUFBLENBQUFDLE9BQUE7QUFBNEIsU0FBQUQsdUJBQUFHLEdBQUEsV0FBQUEsR0FBQSxJQUFBQSxHQUFBLENBQUFDLFVBQUEsR0FBQUQsR0FBQSxnQkFBQUEsR0FBQTtBQUU1QkUsa0JBQU0sQ0FBQ0MsTUFBTSxDQUFDO0VBQUVDLElBQUksRUFBRUEsZ0JBQUksQ0FBQ0MsT0FBTyxDQUFDQyxTQUFTLEVBQUUsWUFBWTtBQUFFLENBQUMsQ0FBQyJ9

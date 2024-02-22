@@ -1,7 +1,8 @@
 /* eslint-env node */
+// import path from 'path'
+const CompressionPlugin = require('compression-webpack-plugin');
 const path = require('path');
-const webpack = require('webpack');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   devtool: 'inline-source-map',
@@ -16,35 +17,25 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        include: [path.resolve(__dirname, 'src')],
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
-            plugins: [
-              '@babel/plugin-proposal-class-properties',
-              '@babel/plugin-proposal-object-rest-spread',
-              '@babel/plugin-transform-runtime',
-              '@babel/plugin-syntax-dynamic-import',
-            ],
+            cacheDirectory: true,
+            cacheCompression: false,
+            envName: 'development',
           },
         },
       },
-      {
-        test: /\.css$/,
-        loader: 'style-loader!css-loader',
-      },
     ],
   },
+
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
   plugins: [
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-    }),
-    new webpack.ProvidePlugin({
-      THREE: 'three',
-    }),
+    new CompressionPlugin(),
     // new BundleAnalyzerPlugin(),
   ],
 };

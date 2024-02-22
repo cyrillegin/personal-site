@@ -1,42 +1,42 @@
-import React, { Component, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ReactGA from 'react-ga';
-import NavBar from '../components/NavBar/NavBar';
-
-const BoatContainer = lazy(() => import('./../pages/Boat/BoatContainer'));
-const DragonflyContainer = lazy(() => import('./../pages/Dragonfly/DragonflyContainer'));
-const VisualizationContainer = lazy(() =>
-  import('./../pages/Visualization/VisualizationContainer'),
-);
+import { NavBar } from '../components/NavBar/NavBar';
+// import { VisualizationPage } from '../pages/Visualization';
+// import { BoatPage } from '../pages/Boat';
+import { DragonflyPage } from '../pages';
 
 ReactGA.initialize('UA-107911028-1');
 
-export default class App extends Component {
-  static propTypes = {};
-
-  fireTracking() {
+export const App = () => {
+  const fireTracking = () => {
     ReactGA.pageview(window.location.hash);
-  }
+  };
 
-  componentDidMount() {
+  useEffect(() => {
     // hide the preloader.
     document.querySelector('.loader').style.visibility = 'hidden';
-  }
+  }, []);
 
-  render() {
-    return (
-      <Router onUpdate={this.fireTracking}>
-        <div>
-          <NavBar />
-          <Suspense fallback={<div>Loading...</div>}>
-            <Switch>
-              <Route exact path="/dragonfly" component={DragonflyContainer} />
-              <Route exact path="/visualization" component={VisualizationContainer} />
-              <Route component={BoatContainer} />
-            </Switch>
-          </Suspense>
-        </div>
-      </Router>
-    );
-  }
-}
+  const router = createBrowserRouter([
+    {
+      path: '/dragonfly',
+      element: <DragonflyPage />,
+    },
+    // {
+    //   path: "/visualization",
+    //   element: <VisualizationPage />,
+    // },
+    // {
+    //   path: "/",
+    //   element: <BoatPage />,
+    // },
+  ]);
+
+  return (
+    <div>
+      <NavBar />
+      <RouterProvider router={router} />
+    </div>
+  );
+};
