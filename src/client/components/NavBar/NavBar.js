@@ -1,8 +1,4 @@
 import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
-// import { withStyles } from '@material-ui/core/styles';
-import { Link, withRouter } from 'react-router-dom';
-// import Typography from '@material-ui/core/Typography';
 import { SocialIcon } from 'react-social-icons';
 import { createUseStyles } from 'react-jss';
 

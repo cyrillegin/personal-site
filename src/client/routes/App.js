@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { NavBar } from '../components/NavBar/NavBar';
-// import { VisualizationPage } from '../pages/Visualization';
 // import { BoatPage } from '../pages/Boat';
-import { DragonflyPage } from '../pages';
+import { DragonflyPage, VisualizationPage } from '../pages';
 
 ReactGA.initialize('UA-107911028-1');
 
@@ -23,10 +22,10 @@ export const App = () => {
       path: '/dragonfly',
       element: <DragonflyPage />,
     },
-    // {
-    //   path: "/visualization",
-    //   element: <VisualizationPage />,
-    // },
+    {
+      path: '/visualization',
+      element: <VisualizationPage />,
+    },
     // {
     //   path: "/",
     //   element: <BoatPage />,

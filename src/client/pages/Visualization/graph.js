@@ -1,44 +1,41 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@mui/material/styles';
+// import { withStyles } from '@mui/material/styles';
 // import './graph-styles.css';
 
 const d3 = {
-  ...require('d3-selection'), // eslint-disable-line
-  ...require('d3-scale'), // eslint-disable-line
-  ...require('d3-axis'), // eslint-disable-line
-  ...require('d3-format'), // eslint-disable-line
-  ...require('d3-shape'), // eslint-disable-line
-  ...require('d3-array'), // eslint-disable-line
+  ...require('d3-selection'),
+  ...require('d3-scale'),
+  ...require('d3-axis'),
+  ...require('d3-format'),
+  ...require('d3-shape'),
+  ...require('d3-array'),
 };
 
-const styles = theme => ({
-  root: {},
-});
+export const Graph = props => {
+  // static propTypes = {
+  //   classes: PropTypes.object.isRequired,
+  //   points: PropTypes.arrayOf(
+  //     PropTypes.shape({
+  //       x: PropTypes.number.isRequired,
+  //       y: PropTypes.number.isRequired,
+  //     }),
+  //   ).isRequired,
+  //   ranges: PropTypes.shape({
+  //     xMin: PropTypes.number.isRequired,
+  //     xMax: PropTypes.number.isRequired,
+  //     yMin: PropTypes.number.isRequired,
+  //     yMax: PropTypes.number.isRequired,
+  //   }).isRequired,
+  // };
+  // const classes = useStyles();
 
-export class Graph extends Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    points: PropTypes.arrayOf(
-      PropTypes.shape({
-        x: PropTypes.number.isRequired,
-        y: PropTypes.number.isRequired,
-      }),
-    ).isRequired,
-    ranges: PropTypes.shape({
-      xMin: PropTypes.number.isRequired,
-      xMax: PropTypes.number.isRequired,
-      yMin: PropTypes.number.isRequired,
-      yMax: PropTypes.number.isRequired,
-    }).isRequired,
-  };
-
-  state = {
+  const [state, setState] = useState({
     mounted: false,
-  };
+  });
 
-  drawGraph() {
-    if (this.props.points.length === 0) {
+  const drawGraph = () => {
+    if (props.points.length === 0) {
       return;
     }
     // Initialization.
@@ -69,12 +66,12 @@ export class Graph extends Component {
 
     const xScale = d3
       .scaleLinear()
-      .domain([this.props.ranges.xMin, this.props.ranges.xMax]) // input
+      .domain([props.ranges.xMin, props.ranges.xMax]) // input
       .range([0, width]); // output
 
     const yScale = d3
       .scaleLinear()
-      .domain([this.props.ranges.yMin, this.props.ranges.yMax]) // input
+      .domain([props.ranges.yMin, props.ranges.yMax]) // input
       .range([height - margin.bottom, margin.top]); // output
 
     // Y Axis
@@ -91,7 +88,7 @@ export class Graph extends Component {
       .axisLeft(yScale)
       .tickSizeInner(-width)
       .tickSizeOuter(0)
-      .tickValues(getTic(this.props.ranges.yMax, this.props.ranges.yMin));
+      .tickValues(getTic(props.ranges.yMax, props.ranges.yMin));
 
     newChart.append('g').attr('class', 'chart-axis-shape').call(yAxis);
 
@@ -134,10 +131,10 @@ export class Graph extends Component {
       .line()
       .defined(d => {
         return (
-          d.x <= this.props.ranges.xMax &&
-          d.x >= this.props.ranges.xMin &&
-          d.y >= this.props.ranges.yMin &&
-          d.y <= this.props.ranges.yMax
+          d.x <= props.ranges.xMax &&
+          d.x >= props.ranges.xMin &&
+          d.y >= props.ranges.yMin &&
+          d.y <= props.ranges.yMax
         );
       })
       .x(d => xScale(d.x))
@@ -145,29 +142,25 @@ export class Graph extends Component {
 
     newChart
       .append('path')
-      .attr('d', lineFunction(this.props.points))
+      .attr('d', lineFunction(props.points))
       .attr('stroke', 'rgba(45, 100, 255, 0.87)')
       .attr('stroke-width', 2)
       .attr('fill', 'none');
-  } // End D3
+  }; // End D3
 
-  componentDidMount() {
-    this.drawGraph();
-    this.setState({
+  useEffect(() => {
+    drawGraph();
+    setState({
       mounted: true,
     });
-  }
+  }, []);
 
-  render() {
-    if (this.state.mounted) {
-      this.drawGraph();
-    }
-    return (
-      <div className={this.props.classes.root}>
-        <div id="graph-container" />
-      </div>
-    );
+  if (state.mounted) {
+    drawGraph();
   }
-}
-
-export default withStyles(styles)(Graph);
+  return (
+    <div>
+      <div id="graph-container" />
+    </div>
+  );
+};
