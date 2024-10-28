@@ -15,3 +15,5 @@ dist/sw.js
 # Misc
 old/
 localcerts/
+
+scripts.sh

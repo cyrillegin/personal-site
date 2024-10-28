@@ -1,9 +1,11 @@
-import React from 'react';
-import { App } from './routes/App';
-import { createRoot } from 'react-dom/client';
+import { ThreeManager } from './ThreeManager';
 
-const root = createRoot(document.getElementById('root'));
-root.render(<App />);
+const canvas = document.createElement('div');
+canvas.id = 'canvas'; 
+document.body.appendChild(canvas);
+
+ThreeManager.init(canvas); 
+document.querySelector('.loader').style.visibility = 'hidden';
 
 // window.addEventListener('load', () => {
 //   if ('serviceWorker' in navigator) {
