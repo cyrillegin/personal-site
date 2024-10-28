@@ -1,10 +1,10 @@
 import { ThreeManager } from './ThreeManager';
 
 const canvas = document.createElement('div');
-canvas.id = 'canvas'; 
+canvas.id = 'canvas';
 document.body.appendChild(canvas);
 
-ThreeManager.init(canvas); 
+ThreeManager.init(canvas);
 document.querySelector('.loader').style.visibility = 'hidden';
 
 // window.addEventListener('load', () => {

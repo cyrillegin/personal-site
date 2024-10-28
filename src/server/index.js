@@ -31,5 +31,4 @@ import compression from 'compression';
 
   const server = http.createServer(app);
   server.listen(port, () => console.info(`Site running on localhost:${port}`));
-
 })();
