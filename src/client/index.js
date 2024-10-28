@@ -2,6 +2,8 @@ import { ThreeManager } from './ThreeManager';
 
 const canvas = document.createElement('div');
 canvas.id = 'canvas';
+canvas.style.height = '100vh';
+canvas.style.width = '100%';
 document.body.appendChild(canvas);
 
 ThreeManager.init(canvas);
