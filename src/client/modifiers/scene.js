@@ -1,6 +1,7 @@
-import { Color, DirectionalLight, HemisphereLight, Scene } from "three";
+import { Color, DirectionalLight, HemisphereLight, Scene, TextureLoader } from "three";
 import {
     PointLightHelper,
+    LinearSRGBColorSpace
   } from 'three';
   import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { ThreeManager } from '../ThreeManager';
@@ -29,12 +30,19 @@ const addLights = () => {
     scene.add(hemiLight);
 }
 
+const interactableObjects = ["CyrilleBtn", "ResumeBtn", "AboutBtn", "GridfinityBtn", "HomeBtn"];
+
 const loadScene = () => {
     const {scene} = ThreeManager;
+
     const fbxLoader = new FBXLoader();
     fbxLoader.load('SiteScene.fbx', object => {
       let lampObject;
+      let homeBtn;
       object.traverse(child => {
+        if (interactableObjects.includes(child.name)) {
+            child.interactable = true;
+        }
         if (child.isLight) {
           child.castShadow = true;
 
@@ -45,16 +53,25 @@ const loadScene = () => {
           // create helper
           const helper = new PointLightHelper(child, 5);
           scene.add(helper);
-        }
-        if (child.isMesh) {
+        } else if (child.isMesh) {
           child.castShadow = true;
           child.receiveShadow = true;
+
+          if(child.name === "HomeBtn") {
+            child.visible = false;
+          }
+     
+          const mat = child.material.length && child.material.filter(m => m.name === 'messageMaterial')[0];
+            if (mat) {
+                mat.map.colorSpace = LinearSRGBColorSpace
+                mat.emissive = new Color(0x222222);
+            }
         }
       });
       lampObject.receiveShadow = false;
       lampObject.castShadow = false;
 
-      // addTransformer(lampObject);
+    //   addTransformer(lampObject);
 
       // this.scene.add(this.control);
       scene.add(object);
